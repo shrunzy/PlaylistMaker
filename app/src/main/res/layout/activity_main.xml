@@ -34,6 +34,7 @@
         android:textSize="@dimen/text_size_title"
         app:cornerRadius="16dp"
         app:icon="@drawable/search"
+        android:textAllCaps="false"
         app:iconGravity="textStart"
         app:iconPadding="10dp"
         app:iconTint="@color/black" />
@@ -50,6 +51,7 @@
         android:textSize="@dimen/text_size_title"
         app:cornerRadius="16dp"
         app:icon="@drawable/media"
+        android:textAllCaps="false"
         app:iconGravity="textStart"
         app:iconPadding="10dp"
         app:iconTint="@color/black" />
@@ -67,6 +69,7 @@
         app:backgroundTint="@color/white"
         app:cornerRadius="16dp"
         app:icon="@drawable/settings"
+        android:textAllCaps="false"
         app:iconGravity="textStart"
         app:iconPadding="10dp"
         app:iconTint="@color/black"
