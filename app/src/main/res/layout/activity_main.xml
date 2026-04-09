@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/YP_Blue"
+    android:background="@color/main_screen_background"
     android:orientation="vertical"
     android:padding="20dp">
 
@@ -16,27 +16,29 @@
             android:layout_height="wrap_content"
             android:layout_gravity="start"
             android:layout_marginBottom="20dp"
-            android:text="@string/app_name"
+            style="@style/TextTitleStyle"
             android:textColor="@color/white"
-            android:textSize="@dimen/text_size_title" />
+            android:text="@string/app_name"  />
 
     </FrameLayout>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_search"
         style="@style/ButtonMainStyleMaterial"
-        android:layout_marginBottom="12dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="16dp"
         android:text="@string/search"
         app:icon="@drawable/search" />
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_media"
         style="@style/ButtonMainStyleMaterial"
-        android:layout_marginBottom="12dp"
+        android:layout_marginBottom="16dp"
         android:text="@string/media"
         app:icon="@drawable/media" />
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_settings"
         style="@style/ButtonMainStyleMaterial"
+        android:layout_marginBottom="16dp"
         android:text="@string/settings"
         app:icon="@drawable/settings" />
 
