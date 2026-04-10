@@ -34,11 +34,13 @@
             style="@style/TextSettingsStyle"
             android:text="@string/dark_theme" />
 
-        <Switch
+        <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/switch_notifications"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:checked="true" />
+            android:checked="true"
+            app:trackTint="@color/switch_track"
+            app:thumbTint="@color/switch_thumb"/>
 
     </LinearLayout>
 

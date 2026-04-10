@@ -4,4 +4,12 @@
     <color name="settings_screen_background">#0A0A0A</color>
     <color name="settings_text_color">#FFFFFF</color>
     <color name="settings_icons_color">#FFFFFF</color>
+
+    <!-- Кружок (thumb) -->
+    <color name="switch_thumb_on">#3772E7</color>
+    <color name="switch_thumb_off">#757575</color>
+
+    <!-- Полоска (track) -->
+    <color name="switch_track_on">#9FBBF3</color>
+    <color name="switch_track_off">#424242</color>
 </resources>

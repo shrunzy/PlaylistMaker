@@ -15,4 +15,15 @@
     <color name="settings_screen_background">#FFFFFF</color>
     <color name="settings_text_color">#000000</color>
     <color name="settings_icons_color">#AEAFB4</color>
-</resources>
+
+    <!-- === Цвета для Switch === -->
+
+    <!-- Кружок (thumb) -->
+    <color name="switch_thumb_on">#00D6C3</color>      <!-- белый когда включено -->
+    <color name="switch_thumb_off">#F5F5F5</color>     <!-- светло-серый когда выключено -->
+
+    <!-- Полоска (track) -->
+    <color name="switch_track_on">#76EAE0</color>      <!-- зелёный когда включено (или твой основной цвет) -->
+    <color name="switch_track_off">#B0B0B0</color>     <!-- серый когда выключено -->
+
+    </resources>
