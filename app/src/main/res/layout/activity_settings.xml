@@ -44,7 +44,10 @@
 
     </LinearLayout>
 
-    <LinearLayout style="@style/LinearLayoutSettingsStyle">
+    <LinearLayout
+        android:id="@+id/share_app_layout"
+        style="@style/LinearLayoutSettingsStyle">
+
 
         <TextView
             style="@style/TextSettingsStyle"
@@ -56,7 +59,10 @@
             android:src="@drawable/share" />
     </LinearLayout>
 
-    <LinearLayout style="@style/LinearLayoutSettingsStyle">
+    <LinearLayout
+        android:id="@+id/email_support_layout"
+        style="@style/LinearLayoutSettingsStyle">
+
 
         <TextView
             style="@style/TextSettingsStyle"
@@ -69,7 +75,9 @@
 
     </LinearLayout>
 
-    <LinearLayout style="@style/LinearLayoutSettingsStyle">
+    <LinearLayout
+        android:id="@+id/user_agreement_layout"
+        style="@style/LinearLayoutSettingsStyle">
 
         <TextView
             style="@style/TextSettingsStyle"
