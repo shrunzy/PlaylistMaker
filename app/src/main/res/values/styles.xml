@@ -17,6 +17,12 @@
         <item name="android:textSize">16sp</item>
     </style>
 
+    <style name="TextSearchStyle" parent="TextSettingsStyle">
+        <item name="android:textColor">@color/search_text_color</item>
+    </style>
+
+
+
     <style name="TextAppearance.MainWindowText" parent="TextAppearance.MaterialComponents.Headline1">
         <item name="android:textSize">22sp</item>
         <item name="android:fontFamily">@font/ys_display_medium</item>

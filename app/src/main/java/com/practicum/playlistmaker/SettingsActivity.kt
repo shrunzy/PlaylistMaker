@@ -55,6 +55,7 @@ class SettingsActivity : AppCompatActivity() {
             }
         }
 
+        //выход из активити по кнопке назад
         findViewById<ImageView>(R.id.settings_back).setOnClickListener {
             finish()
         }
@@ -107,7 +108,7 @@ class SettingsActivity : AppCompatActivity() {
         }
             //startActivity(emailIntent)
         try {
-            // createChooser — очень важен!
+            // createChooser
             startActivity(
                 Intent.createChooser(emailIntent, "Отправить письмо через...")
             )

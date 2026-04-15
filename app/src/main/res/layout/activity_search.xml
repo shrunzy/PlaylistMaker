@@ -1,6 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="16dp"
+    android:paddingTop="22dp"
+    android:paddingRight="16dp"
+    android:paddingBottom="32dp"
+    android:background="@color/settings_screen_background">
+
+    <LinearLayout style="@style/LinearLayoutSettingsStyle">
+
+        <ImageView
+            android:id="@+id/search_back"
+            style="@style/IconSettingsStyle"
+            app:tint="@color/settings_text_color"
+            android:layout_marginStart="0dp"
+            android:layout_marginEnd="24dp"
+            android:contentDescription="arrow"
+
+            android:src="@drawable/ic_back_arrow_24" />
+
+        <TextView
+            android:id="@+id/search_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/search"
+            style="@style/TextTitleStyle"
+            android:textColor="@color/settings_text_color"/>
+    </LinearLayout>
+
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/search_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:boxCornerRadiusTopStart="8dp"
+            app:boxCornerRadiusTopEnd="8dp"
+            app:boxCornerRadiusBottomStart="8dp"
+            app:boxCornerRadiusBottomEnd="8dp"
+            app:startIconDrawable="@drawable/ic_search_24"
+            app:startIconTint="@color/search_icons_color"
+            app:endIconMode="custom"
+            app:endIconDrawable="@drawable/ic_clear_16"
+            app:endIconTint="@color/search_icons_color"
+            app:hintEnabled="false">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_search"
+                style="@style/TextSearchStyle"
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:hint="@string/search_hint"
+                android:textColorHint="@color/search_icons_color"
+                android:imeOptions="actionSearch"
+                android:inputType="text"
+                android:maxLines="1"
+                android:background="@drawable/bg_search_field" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
 
 </LinearLayout>
