@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="main_screen_background">#0A0A0A</color>
-    <color name="settings_screen_background">#0A0A0A</color>
+    <color name="main_screen_background">#1A1B22</color>
+    <color name="settings_screen_background">#1A1B22</color>
+    <color name="search_screen_background">#1A1B22</color>
     <color name="settings_text_color">#FFFFFF</color>
     <color name="search_text_color">#1A1B22</color>
     <color name="settings_icons_color">#FFFFFF</color>

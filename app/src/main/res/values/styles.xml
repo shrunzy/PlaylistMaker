@@ -19,7 +19,7 @@
 
     <style name="TextSearchStyle" parent="TextSettingsStyle">
         <item name="android:textColor">@color/search_text_color</item>
-    </style>
+        </style>
 
 
 

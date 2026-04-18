@@ -8,7 +8,7 @@
     android:paddingTop="22dp"
     android:paddingRight="16dp"
     android:paddingBottom="32dp"
-    android:background="@color/settings_screen_background">
+    android:background="@color/search_screen_background">
 
     <LinearLayout style="@style/LinearLayoutSettingsStyle">
 
@@ -55,7 +55,10 @@
                 android:id="@+id/et_search"
                 style="@style/TextSearchStyle"
                 android:layout_width="match_parent"
-                android:layout_height="54dp"
+                android:layout_height="36dp"
+                android:gravity="center_vertical"
+                android:paddingTop="0dp"
+                android:paddingBottom="0dp"
                 android:hint="@string/search_hint"
                 android:textColorHint="@color/search_icons_color"
                 android:imeOptions="actionSearch"
