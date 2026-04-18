@@ -6,12 +6,17 @@ import android.text.TextWatcher
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.doOnTextChanged
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
 class SearchActivity : AppCompatActivity() {
 
     private var searchQuery: String = ""
+
+    companion object {
+        private const val KEY_SEARCH_QUERY = "SEARCH_QUERY"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,35 +36,44 @@ class SearchActivity : AppCompatActivity() {
             searchLayout.isEndIconVisible = false
         }
 
-        editText.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+        //editText.addTextChangedListener(object : TextWatcher {
+        //    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+        //    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
 
-                val hasText = !s.isNullOrEmpty()
+        //        val hasText = !s.isNullOrEmpty()
 
-                searchLayout.isEndIconVisible = !s.isNullOrEmpty()
+        //        searchLayout.isEndIconVisible = !s.isNullOrEmpty()
 
-                searchLayout.isEndIconVisible = hasText
+        //        searchLayout.isEndIconVisible = hasText
 
-                searchQuery = s?.toString() ?: ""
+        //        searchQuery = s?.toString() ?: ""
 
-            }
+        //    }
 
-            override fun afterTextChanged(s: Editable?) {
+        //    override fun afterTextChanged(s: Editable?) {
 
-            }
-        })
+        //    }
+        //})
+
+        editText.doOnTextChanged { text, start, before, count ->
+            val hasText = !text.isNullOrEmpty()
+            searchLayout.isEndIconVisible = hasText
+
+            searchQuery = text?.toString() ?: ""
+
+
+        }
     }
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putString("SEARCH_QUERY", searchQuery)
+        outState.putString(KEY_SEARCH_QUERY, searchQuery)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
 
-        val restoredText = savedInstanceState.getString("SEARCH_QUERY", "")
+        val restoredText = savedInstanceState.getString(KEY_SEARCH_QUERY, "")
 
         if (restoredText.isNotEmpty()) {
             val editText = findViewById<TextInputEditText>(R.id.et_search)

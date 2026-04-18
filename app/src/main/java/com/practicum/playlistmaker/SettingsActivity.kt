@@ -71,38 +71,37 @@ class SettingsActivity : AppCompatActivity() {
         try {
             startActivity(intent)
         } catch (e: ActivityNotFoundException) {
-            Toast.makeText(this, "Не удалось открыть браузер", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, R.string.browser_error, Toast.LENGTH_SHORT).show()
         } catch (e: Exception) {
-            Toast.makeText(this, "Произошла ошибка", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, R.string.generic_error, Toast.LENGTH_SHORT).show()
         }
     }
 
     private fun shareAppLayout() {
         val shareAppLayout = Intent(Intent.ACTION_SEND)
         shareAppLayout.type = "text/plain"
-        shareAppLayout.putExtra(Intent.EXTRA_SUBJECT, "Курс по Андроид-разработке в Практикуме")
-        shareAppLayout.putExtra(Intent.EXTRA_TEXT, "https://practicum.yandex.ru/profile/android-developer-plus/?from=learn_subscriptions-with-prof-recommendations")
+        shareAppLayout.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.course_name))
+        shareAppLayout.putExtra(Intent.EXTRA_TEXT, getString(R.string.course_url))
 
         try {
-            startActivity(Intent.createChooser(shareAppLayout, "Поделиться приложением"))
+            startActivity(Intent.createChooser(shareAppLayout, getString(R.string.share)))
 
         } catch (e: ActivityNotFoundException) {
-            Toast.makeText(this, "Не удалось найти подходящее приложение", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, R.string.suitable_app_not_found, Toast.LENGTH_SHORT).show()
         } catch (e: Exception) {
-            Toast.makeText(this, "Произошла ошибка", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, R.string.generic_error, Toast.LENGTH_SHORT).show()
         }
     }
 
     private fun openEmailSupport() {
-        //Toast.makeText(this, "email support", Toast.LENGTH_SHORT).show()
         val emailAddress = getString(R.string.email_support)
         val subject = getString(R.string.email_subject)
         val text = getString(R.string.email_text)
 
         val emailIntent = Intent(Intent.ACTION_SENDTO).apply {
             //type = "message/rfc822"
-            data = Uri.parse("mailto:$emailAddress")
-                //putExtra(Intent.EXTRA_EMAIL, arrayOf(emailAddress))
+            data = Uri.parse("mailto:")
+            putExtra(Intent.EXTRA_EMAIL, arrayOf(emailAddress))
             putExtra(Intent.EXTRA_SUBJECT, subject)
             putExtra(Intent.EXTRA_TEXT, text)
         }
@@ -110,12 +109,13 @@ class SettingsActivity : AppCompatActivity() {
         try {
             // createChooser
             startActivity(
-                Intent.createChooser(emailIntent, "Отправить письмо через...")
+                Intent.createChooser(emailIntent, getString(R.string.send_email_with))
+                //startActivity(emailIntent)о через...")
             )
         } catch (e: ActivityNotFoundException) {
-            Toast.makeText(this, "Почтовое приложение не найдено", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, getString(R.string.mail_program_not_fount), Toast.LENGTH_LONG).show()
         } catch (e: Exception) {
-            Toast.makeText(this, "Не удалось открыть почту", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.email_program_error), Toast.LENGTH_SHORT).show()
         }
     }
 
