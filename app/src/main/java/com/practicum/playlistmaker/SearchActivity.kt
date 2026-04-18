@@ -1,12 +1,15 @@
 package com.practicum.playlistmaker
 
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import android.view.inputmethod.InputMethodManager
 import androidx.core.widget.doOnTextChanged
+
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
@@ -32,8 +35,12 @@ class SearchActivity : AppCompatActivity() {
         }
 
         searchLayout.setEndIconOnClickListener {
+            val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
             editText.text?.clear()
             searchLayout.isEndIconVisible = false
+            currentFocus?.windowToken?.let { windowToken ->
+                inputMethodManager?.hideSoftInputFromWindow(windowToken, 0)
+            }
         }
 
         //editText.addTextChangedListener(object : TextWatcher {
@@ -83,5 +90,6 @@ class SearchActivity : AppCompatActivity() {
             editText.setSelection(restoredText.length)
         }
     }
+
 
 }
