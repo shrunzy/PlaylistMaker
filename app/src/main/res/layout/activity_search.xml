@@ -29,6 +29,7 @@
             android:text="@string/search"
             style="@style/TextTitleStyle"
             android:textColor="@color/settings_text_color"/>
+
     </LinearLayout>
 
 

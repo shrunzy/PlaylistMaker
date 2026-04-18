@@ -10,6 +10,9 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
 class SearchActivity : AppCompatActivity() {
+
+    private var searchQuery: String = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -39,6 +42,8 @@ class SearchActivity : AppCompatActivity() {
 
                 searchLayout.isEndIconVisible = hasText
 
+                searchQuery = s?.toString() ?: ""
+
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -46,6 +51,23 @@ class SearchActivity : AppCompatActivity() {
             }
         })
     }
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString("SEARCH_QUERY", searchQuery)
+    }
 
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+
+        val restoredText = savedInstanceState.getString("SEARCH_QUERY", "")
+
+        if (restoredText.isNotEmpty()) {
+            val editText = findViewById<TextInputEditText>(R.id.et_search)
+            editText.setText(restoredText+" restored_text")
+
+            // Ставим курсор в конец текста
+            editText.setSelection(restoredText.length)
+        }
+    }
 
 }
