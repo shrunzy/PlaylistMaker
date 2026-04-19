@@ -5,135 +5,89 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:paddingLeft="16dp"
+    android:paddingTop="22dp"
     android:paddingRight="16dp"
     android:paddingBottom="32dp"
-    android:paddingTop="22dp">
+    android:background="@color/settings_screen_background">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="20dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+    <LinearLayout style="@style/LinearLayoutSettingsStyle">
 
         <ImageView
             android:id="@+id/settings_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/IconSettingsStyle"
+            app:tint="@color/settings_text_color"
+            android:layout_marginStart="0dp"
             android:layout_marginEnd="24dp"
             android:contentDescription="arrow"
-            android:scaleType="centerInside"
             android:src="@drawable/ic_back_arrow_24" />
-
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/settings"
-            android:textColor="@color/black"
-            android:textSize="@dimen/text_size_title" />
-
+            style="@style/TextTitleStyle"
+            android:textColor="@color/settings_text_color"/>
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="20dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+    <LinearLayout style="@style/LinearLayoutSettingsStyle"
+        android:layout_marginBottom="8dp">
 
         <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/dark_theme"
-            android:textColor="@color/black"
-            android:textSize="@dimen/text_size_medium" />
+            style="@style/TextSettingsStyle"
+            android:text="@string/dark_theme" />
 
-        <Switch
+        <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/switch_notifications"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:checked="true" />
+            android:checked="true"
+            app:trackTint="@color/switch_track"
+            app:thumbTint="@color/switch_thumb"/>
 
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="20dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:id="@+id/share_app_layout"
+        style="@style/LinearLayoutSettingsStyle">
+
 
         <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/share"
-            android:textColor="@color/black"
-            android:textSize="@dimen/text_size_medium" />
+            style="@style/TextSettingsStyle"
+            android:text="@string/share" />
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:contentDescription="arrow"
-            android:scaleType="centerInside"
+            style="@style/IconSettingsStyle"
+            android:contentDescription="share"
             android:src="@drawable/share" />
-
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="20dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:id="@+id/email_support_layout"
+        style="@style/LinearLayoutSettingsStyle">
+
 
         <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/support"
-            android:textColor="@color/black"
-            android:textSize="@dimen/text_size_medium" />
+            style="@style/TextSettingsStyle"
+            android:text="@string/support" />
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:contentDescription="arrow"
-            android:scaleType="centerInside"
+            style="@style/IconSettingsStyle"
+            android:contentDescription="support"
             android:src="@drawable/support" />
 
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="20dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:id="@+id/user_agreement_layout"
+        style="@style/LinearLayoutSettingsStyle">
 
         <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/agreement"
-            android:textColor="@color/black"
-            android:textSize="@dimen/text_size_medium" />
+            style="@style/TextSettingsStyle"
+            android:text="@string/agreement" />
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:contentDescription="arrow"
-            android:scaleType="centerInside"
+            style="@style/IconSettingsStyle"
+            android:contentDescription="forward arrow"
             android:src="@drawable/ic_forward_arrow_24" />
 
     </LinearLayout>

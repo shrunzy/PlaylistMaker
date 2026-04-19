@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Цвет фона поля поиска -->
+    <solid android:color="@color/gray_light" />
+
+    <!-- Скругление углов -->
+    <corners android:radius="8dp" />
+
+    <!-- Обводка (рамка) вокруг поля -->
+    <stroke
+        android:width="1dp"
+        android:color="@color/gray_light" />
+
+</shape>
