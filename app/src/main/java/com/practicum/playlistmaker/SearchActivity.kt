@@ -40,6 +40,8 @@ class SearchActivity : AppCompatActivity(), OnTrackClickListener {
 
         loadAllTracks()
 
+        binding.searchLayout.isEndIconVisible = false
+
         // Кнопка назад
         binding.searchBack.setOnClickListener {
             finish()
