@@ -31,4 +31,7 @@
     <color name="switch_track_on">#76EAE0</color>      <!-- зелёный когда включено (или твой основной цвет) -->
     <color name="switch_track_off">#B0B0B0</color>     <!-- серый когда выключено -->
 
+    <color name="text_primary">#000000</color>
+    <color name="text_secondary">#AEAFB4</color>
+
     </resources>

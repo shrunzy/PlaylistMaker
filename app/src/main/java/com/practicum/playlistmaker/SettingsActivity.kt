@@ -12,7 +12,6 @@ import androidx.appcompat.app.AppCompatDelegate
 import com.google.android.material.switchmaterial.SwitchMaterial
 
 
-
 class SettingsActivity : AppCompatActivity() {
 
 
@@ -24,7 +23,6 @@ class SettingsActivity : AppCompatActivity() {
         val userAgreementLayout = findViewById<LinearLayout>(R.id.user_agreement_layout)
         val emailSupportLayout = findViewById<LinearLayout>(R.id.email_support_layout)
         val shareAppLayout = findViewById<LinearLayout>(R.id.share_app_layout)
-
 
 
         // обработчик нажатия
@@ -44,7 +42,8 @@ class SettingsActivity : AppCompatActivity() {
 
 
         val switchDarkTheme: SwitchMaterial = findViewById(R.id.switch_notifications)
-        switchDarkTheme.isChecked = AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES
+        switchDarkTheme.isChecked =
+            AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES
         switchDarkTheme.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 // Включаем тёмную тему
@@ -67,7 +66,7 @@ class SettingsActivity : AppCompatActivity() {
         val intent = Intent(Intent.ACTION_VIEW).apply {
             data = Uri.parse(url)
         }
-            //startActivity(intent)
+        //startActivity(intent)
         try {
             startActivity(intent)
         } catch (e: ActivityNotFoundException) {
@@ -105,7 +104,7 @@ class SettingsActivity : AppCompatActivity() {
             putExtra(Intent.EXTRA_SUBJECT, subject)
             putExtra(Intent.EXTRA_TEXT, text)
         }
-            //startActivity(emailIntent)
+        //startActivity(emailIntent)
         try {
             // createChooser
             startActivity(
@@ -113,7 +112,8 @@ class SettingsActivity : AppCompatActivity() {
                 //startActivity(emailIntent)о через...")
             )
         } catch (e: ActivityNotFoundException) {
-            Toast.makeText(this, getString(R.string.mail_program_not_fount), Toast.LENGTH_LONG).show()
+            Toast.makeText(this, getString(R.string.mail_program_not_fount), Toast.LENGTH_LONG)
+                .show()
         } catch (e: Exception) {
             Toast.makeText(this, getString(R.string.email_program_error), Toast.LENGTH_SHORT).show()
         }

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp">
+
+    <!-- Обложка -->
+    <ImageView
+        android:id="@+id/ivArtwork"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:contentDescription="@string/track_cover" />
+
+    <!-- Название трека -->
+    <TextView
+        android:id="@+id/tvTrackName"
+        style="@style/TextAppearance.PlaylistMaker.TrackName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="1"
+        app:layout_constraintStart_toEndOf="@id/ivArtwork"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/ivArtwork"
+        app:layout_constraintBottom_toTopOf="@id/tvArtistName"
+        android:layout_marginStart="12dp" />
+
+    <!-- Исполнитель -->
+    <TextView
+        android:id="@+id/tvArtistName"
+        style="@style/TextAppearance.PlaylistMaker.ArtistName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="1"
+        app:layout_constraintStart_toStartOf="@id/tvTrackName"
+        app:layout_constraintTop_toBottomOf="@id/tvTrackName"
+        app:layout_constraintBottom_toBottomOf="@id/ivArtwork"
+        android:layout_marginTop="0dp"/>
+
+    <!-- Точка-разделитель (SVG) -->
+    <ImageView
+        android:id="@+id/ivDot"
+        android:layout_width="3dp"
+        android:layout_height="3dp"
+        android:layout_marginStart="5dp"
+
+        android:src="@drawable/ic_dot"
+        app:layout_constraintStart_toEndOf="@id/tvArtistName"
+        app:layout_constraintTop_toTopOf="@id/tvArtistName"
+        app:layout_constraintBottom_toBottomOf="@id/tvArtistName" />
+
+    <!-- Время трека -->
+    <TextView
+        android:id="@+id/tvTrackTime"
+        style="@style/TextAppearance.PlaylistMaker.TrackTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        app:layout_constraintStart_toEndOf="@id/ivDot"
+        app:layout_constraintTop_toTopOf="@id/tvArtistName"
+        app:layout_constraintBottom_toBottomOf="@id/tvArtistName" />
+
+    <ImageView
+        android:id="@+id/ivForward"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/ic_forward_arrow_24"
+        android:scaleType="center"
+        app:tint="@color/text_secondary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginEnd="4dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
