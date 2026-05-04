@@ -2,76 +2,96 @@ package com.practicum.playlistmaker
 
 import android.content.Context
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import android.widget.ImageView
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import android.view.inputmethod.InputMethodManager
 import androidx.core.widget.doOnTextChanged
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.practicum.playlistmaker.data.TrackRepository
+import com.practicum.playlistmaker.databinding.ActivitySearchBinding
+import com.practicum.playlistmaker.model.OnTrackClickListener
+import com.practicum.playlistmaker.model.Track
+import com.practicum.playlistmaker.model.TrackAdapter
 
-import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
-
-class SearchActivity : AppCompatActivity() {
+class SearchActivity : AppCompatActivity(), OnTrackClickListener {
 
     private var searchQuery: String = ""
+
+    private lateinit var binding: ActivitySearchBinding
 
     companion object {
         private const val KEY_SEARCH_QUERY = "SEARCH_QUERY"
     }
 
+    private val originalTracks = ArrayList(TrackRepository.getTracks())
+    private val tracks = ArrayList<Track>()
+    private lateinit var trackAdapter: TrackAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_search)
-        val searchLayout = findViewById<TextInputLayout>(R.id.search_layout)
-        val editText = findViewById<TextInputEditText>(R.id.et_search)
-            searchLayout.isEndIconVisible = false
+        binding = ActivitySearchBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        //выход из активити по кнопке назад
-        findViewById<ImageView>(R.id.search_back).setOnClickListener {
+        //trackAdapter = TrackAdapter(tracks)
+        trackAdapter = TrackAdapter(tracks, this)
+        binding.recyclerView.layoutManager = LinearLayoutManager(this)
+        binding.recyclerView.adapter = trackAdapter
+
+        loadAllTracks()
+
+        binding.searchLayout.isEndIconVisible = false
+
+        // Кнопка назад
+        binding.searchBack.setOnClickListener {
             finish()
         }
 
-        searchLayout.setEndIconOnClickListener {
-            val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-            editText.text?.clear()
-            searchLayout.isEndIconVisible = false
-            currentFocus?.windowToken?.let { windowToken ->
-                inputMethodManager?.hideSoftInputFromWindow(windowToken, 0)
+        // Очистка поля
+        binding.searchLayout.setEndIconOnClickListener {
+            binding.etSearch.text?.clear()
+            //binding.searchLayout.isEndIconVisible = false
+            //loadAllTracks()           // показываем все треки
+            hideKeyboard(binding.etSearch)
+        }
+
+        binding.etSearch.doOnTextChanged { text, _, _, _ ->
+            searchQuery = text?.toString() ?: ""
+
+            val hasText = searchQuery.isNotEmpty()
+            binding.searchLayout.isEndIconVisible = hasText
+
+            if (hasText) {
+                filterTracks(searchQuery)
+            } else {
+                loadAllTracks()
             }
         }
 
-        //editText.addTextChangedListener(object : TextWatcher {
-        //    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-        //    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
-        //        val hasText = !s.isNullOrEmpty()
-
-        //        searchLayout.isEndIconVisible = !s.isNullOrEmpty()
-
-        //        searchLayout.isEndIconVisible = hasText
-
-        //        searchQuery = s?.toString() ?: ""
-
-        //    }
-
-        //    override fun afterTextChanged(s: Editable?) {
-
-        //    }
-        //})
-
-        editText.doOnTextChanged { text, start, before, count ->
-            val hasText = !text.isNullOrEmpty()
-            searchLayout.isEndIconVisible = hasText
-
-            searchQuery = text?.toString() ?: ""
-
-
-        }
     }
+
+    private fun loadAllTracks() {
+        tracks.clear()
+        tracks.addAll(originalTracks)
+        trackAdapter.notifyDataSetChanged()
+    }
+
+    private fun filterTracks(query: String) {
+        val filteredList = originalTracks.filter {
+            it.trackName.contains(query, ignoreCase = true) ||
+                    it.artistName.contains(query, ignoreCase = true)
+        }
+
+        tracks.clear()
+        tracks.addAll(filteredList)
+        trackAdapter.notifyDataSetChanged()
+    }
+
+    private fun hideKeyboard(view: android.view.View) {
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
+    }
+
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putString(KEY_SEARCH_QUERY, searchQuery)
@@ -83,13 +103,24 @@ class SearchActivity : AppCompatActivity() {
         val restoredText = savedInstanceState.getString(KEY_SEARCH_QUERY, "")
 
         if (restoredText.isNotEmpty()) {
-            val editText = findViewById<TextInputEditText>(R.id.et_search)
-            editText.setText(restoredText+" restored_text")
+            //val editText = findViewById<TextInputEditText>(R.id.et_search)
+            binding.etSearch.setText(restoredText)
+            //editText.setText(restoredText+" restored_text")
 
             // Ставим курсор в конец текста
-            editText.setSelection(restoredText.length)
+            binding.etSearch.setSelection(restoredText.length)
         }
     }
 
+    override fun onTrackClick(track: Track) {
+        //Toast.makeText(this, "Клик по треку!", Toast.LENGTH_LONG).show()
+        Toast.makeText(this, "Выбран: ${track.trackName} - ${track.artistName}", Toast.LENGTH_SHORT)
+            .show()
+
+
+        // val intent = Intent(this, PlayerActivity::class.java)
+        // intent.putExtra("TRACK", track)
+        // startActivity(intent)
+    }
 
 }

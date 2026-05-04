@@ -7,5 +7,6 @@
     <dimen name="text_size_title">22sp</dimen>
     <dimen name="text_size_header">24sp</dimen>
     <dimen name="text_size_huge">28sp</dimen>
+    <dimen name="track_corner_radius">2dp</dimen>
 
 </resources>

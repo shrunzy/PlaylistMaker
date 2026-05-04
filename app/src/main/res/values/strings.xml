@@ -20,6 +20,7 @@
     <string name="suitable_app_not_found">Не удалось найти подходящее приложение</string>
     <string name="course_name">Курс по Андроид-разработке в Практикуме</string>
     <string name="course_url">https://practicum.yandex.ru/profile/android-developer-plus/?from=learn_subscriptions-with-prof-recommendations</string>
+    <string name="track_cover">Обложка музыкального трека</string>
 
 
 </resources>
