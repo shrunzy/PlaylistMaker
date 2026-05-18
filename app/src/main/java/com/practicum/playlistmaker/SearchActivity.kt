@@ -2,30 +2,38 @@ package com.practicum.playlistmaker
 
 import android.content.Context
 import android.os.Bundle
+import android.view.View                      // ← ОБЯЗАТЕЛЬНО!
+import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.practicum.playlistmaker.data.TrackRepository
+
 import com.practicum.playlistmaker.databinding.ActivitySearchBinding
 import com.practicum.playlistmaker.model.OnTrackClickListener
+import com.practicum.playlistmaker.model.SearchUiState
+import com.practicum.playlistmaker.model.SearchViewModel
+import com.practicum.playlistmaker.model.SearchViewModelFactory
 import com.practicum.playlistmaker.model.Track
 import com.practicum.playlistmaker.model.TrackAdapter
 
 class SearchActivity : AppCompatActivity(), OnTrackClickListener {
 
-    private var searchQuery: String = ""
-
     private lateinit var binding: ActivitySearchBinding
+    private val viewModel: SearchViewModel by viewModels {
+        SearchViewModelFactory()
+    }
+    private lateinit var trackAdapter: TrackAdapter
 
     companion object {
         private const val KEY_SEARCH_QUERY = "SEARCH_QUERY"
     }
-
-    private val originalTracks = ArrayList(TrackRepository.getTracks())
-    private val tracks = ArrayList<Track>()
-    private lateinit var trackAdapter: TrackAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,94 +41,124 @@ class SearchActivity : AppCompatActivity(), OnTrackClickListener {
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        //trackAdapter = TrackAdapter(tracks)
-        trackAdapter = TrackAdapter(tracks, this)
-        binding.recyclerView.layoutManager = LinearLayoutManager(this)
-        binding.recyclerView.adapter = trackAdapter
+        trackAdapter = TrackAdapter(mutableListOf(), this)
+        binding.recyclerView.apply {
+            layoutManager = LinearLayoutManager(this@SearchActivity)
+            adapter = trackAdapter
+        }
 
-        loadAllTracks()
+        setupListeners()
+        observeUiState()
+
+        binding.searchBack.setOnClickListener { finish() }
 
         binding.searchLayout.isEndIconVisible = false
 
-        // Кнопка назад
-        binding.searchBack.setOnClickListener {
-            finish()
-        }
+        restoreSearchQuery(savedInstanceState)
+    }
 
-        // Очистка поля
+    private fun setupListeners() {
         binding.searchLayout.setEndIconOnClickListener {
+            viewModel.clearQuery()
             binding.etSearch.text?.clear()
-            //binding.searchLayout.isEndIconVisible = false
-            //loadAllTracks()           // показываем все треки
             hideKeyboard(binding.etSearch)
         }
 
+        binding.etSearch.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                val query = binding.etSearch.text?.toString()?.trim() ?: ""
+                if (query.isNotEmpty()) {
+                    viewModel.performSearch(query)
+                }
+                true
+            } else false
+        }
+
         binding.etSearch.doOnTextChanged { text, _, _, _ ->
-            searchQuery = text?.toString() ?: ""
-
-            val hasText = searchQuery.isNotEmpty()
+            val hasText = !text.isNullOrBlank()
             binding.searchLayout.isEndIconVisible = hasText
+        }
 
-            if (hasText) {
-                filterTracks(searchQuery)
-            } else {
-                loadAllTracks()
+
+        //binding.root.findViewById<View>(R.id.btnRetry)?.setOnClickListener {
+        //    viewModel.refreshLastFailedSearch()
+        //}
+        binding.placeholderError.btnRetry.setOnClickListener {
+            viewModel.refreshLastFailedSearch()
+        }
+    }
+
+    private fun observeUiState() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collect { state ->
+                    when (state) {
+                        is SearchUiState.Idle -> showIdleState()
+                        is SearchUiState.Loading -> showLoadingState()
+                        is SearchUiState.Success -> showSuccessState(state.tracks)
+                        is SearchUiState.EmptyResult -> showEmptyState()
+                        is SearchUiState.Error -> showErrorState()
+                    }
+                }
             }
         }
-
     }
 
-    private fun loadAllTracks() {
-        tracks.clear()
-        tracks.addAll(originalTracks)
-        trackAdapter.notifyDataSetChanged()
+
+    private fun showIdleState() {
+        hideAllViews()
     }
 
-    private fun filterTracks(query: String) {
-        val filteredList = originalTracks.filter {
-            it.trackName.contains(query, ignoreCase = true) ||
-                    it.artistName.contains(query, ignoreCase = true)
+    private fun showLoadingState() {
+        hideAllViews()
+        //binding.root.findViewById<View>(R.id.progressBar)?.visibility = View.VISIBLE
+        binding.progressBar.visibility = View.VISIBLE
+    }
+
+    private fun showSuccessState(tracks: List<Track>) {
+        hideAllViews()
+        trackAdapter.updateTracks(tracks)
+        binding.recyclerView.visibility = View.VISIBLE
+    }
+
+    private fun showEmptyState() {
+        hideAllViews()
+        binding.placeholderEmpty.root.visibility = View.VISIBLE
+    }
+
+    private fun showErrorState() {
+        hideAllViews()
+        binding.placeholderError.root.visibility = View.VISIBLE
+    }
+
+    private fun hideAllViews() {
+        binding.recyclerView.visibility = View.GONE
+        binding.progressBar.visibility = View.GONE
+        binding.placeholderEmpty.root.visibility = View.GONE
+        binding.placeholderError.root.visibility = View.GONE
+    }
+
+    private fun restoreSearchQuery(savedInstanceState: Bundle?) {
+        savedInstanceState?.getString(KEY_SEARCH_QUERY)?.let { query ->
+            if (query.isNotEmpty()) {
+                binding.etSearch.setText(query)
+                binding.etSearch.setSelection(query.length)
+            }
         }
-
-        tracks.clear()
-        tracks.addAll(filteredList)
-        trackAdapter.notifyDataSetChanged()
     }
 
-    private fun hideKeyboard(view: android.view.View) {
+    private fun hideKeyboard(view: View) {
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putString(KEY_SEARCH_QUERY, searchQuery)
-    }
-
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-
-        val restoredText = savedInstanceState.getString(KEY_SEARCH_QUERY, "")
-
-        if (restoredText.isNotEmpty()) {
-            //val editText = findViewById<TextInputEditText>(R.id.et_search)
-            binding.etSearch.setText(restoredText)
-            //editText.setText(restoredText+" restored_text")
-
-            // Ставим курсор в конец текста
-            binding.etSearch.setSelection(restoredText.length)
-        }
+        outState.putString(KEY_SEARCH_QUERY, binding.etSearch.text?.toString() ?: "")
     }
 
     override fun onTrackClick(track: Track) {
-        //Toast.makeText(this, "Клик по треку!", Toast.LENGTH_LONG).show()
-        Toast.makeText(this, "Выбран: ${track.trackName} - ${track.artistName}", Toast.LENGTH_SHORT)
+        Toast.makeText(this, "Выбран: ${track.trackName} — ${track.artistName}", Toast.LENGTH_SHORT)
             .show()
-
-
-        // val intent = Intent(this, PlayerActivity::class.java)
-        // intent.putExtra("TRACK", track)
-        // startActivity(intent)
     }
-
 }
