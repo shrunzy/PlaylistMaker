@@ -106,4 +106,14 @@
         <item name="android:textColor">@color/text_secondary</item>
     </style>
 
+    <style name="RetryButtonStyle" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+        <item name="cornerRadius">54dp</item>
+        <item name="backgroundTint">@color/retry_button_background</item>
+        <item name="android:textColor">@color/retry_button_text</item>
+        <item name="android:textAppearance">@style/TextAppearance.MainWindowText</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:paddingStart">32dp</item>
+        <item name="android:paddingEnd">32dp</item>
+    </style>
+
 </resources>

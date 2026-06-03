@@ -21,6 +21,9 @@
     <string name="course_name">Курс по Андроид-разработке в Практикуме</string>
     <string name="course_url">https://practicum.yandex.ru/profile/android-developer-plus/?from=learn_subscriptions-with-prof-recommendations</string>
     <string name="track_cover">Обложка музыкального трека</string>
+    <string name="nothing_found">Ничего не нашлось</string>
+    <string name="search_error">Проблемы со связью\n\nЗагрузка не удалась. Проверьте подключение к интернету</string>
+    <string name="retry">Обновить</string>
 
 
 </resources>

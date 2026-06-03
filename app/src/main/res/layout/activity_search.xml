@@ -3,70 +3,70 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/search_screen_background"
     android:orientation="vertical"
     android:paddingLeft="16dp"
     android:paddingTop="22dp"
     android:paddingRight="16dp"
-    android:paddingBottom="32dp"
-    android:background="@color/search_screen_background">
+    android:paddingBottom="32dp">
 
     <LinearLayout style="@style/LinearLayoutSettingsStyle">
 
         <ImageView
             android:id="@+id/search_back"
             style="@style/IconSettingsStyle"
-            app:tint="@color/settings_text_color"
             android:layout_marginStart="0dp"
             android:layout_marginEnd="24dp"
             android:contentDescription="arrow"
+            android:src="@drawable/ic_back_arrow_24"
 
-            android:src="@drawable/ic_back_arrow_24" />
+            app:tint="@color/settings_text_color" />
 
         <TextView
             android:id="@+id/search_edit"
+            style="@style/TextTitleStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/search"
-            style="@style/TextTitleStyle"
-            android:textColor="@color/settings_text_color"/>
+            android:textColor="@color/settings_text_color" />
 
     </LinearLayout>
 
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/search_layout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        app:boxCornerRadiusBottomEnd="8dp"
+        app:boxCornerRadiusBottomStart="8dp"
+        app:boxCornerRadiusTopEnd="8dp"
+        app:boxCornerRadiusTopStart="8dp"
+        app:endIconDrawable="@drawable/ic_clear_16"
+        app:endIconMode="custom"
+        app:endIconTint="@color/search_icons_color"
+        app:hintEnabled="false"
+        app:startIconDrawable="@drawable/ic_search_24"
+        app:startIconTint="@color/search_icons_color">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/search_layout"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_search"
+            style="@style/TextSearchStyle"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            app:boxCornerRadiusTopStart="8dp"
-            app:boxCornerRadiusTopEnd="8dp"
-            app:boxCornerRadiusBottomStart="8dp"
-            app:boxCornerRadiusBottomEnd="8dp"
-            app:startIconDrawable="@drawable/ic_search_24"
-            app:startIconTint="@color/search_icons_color"
-            app:endIconMode="custom"
-            app:endIconDrawable="@drawable/ic_clear_16"
-            app:endIconTint="@color/search_icons_color"
-            app:hintEnabled="false">
+            android:layout_height="36dp"
+            android:background="@drawable/bg_search_field"
+            android:gravity="center_vertical"
+            android:hint="@string/search_hint"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:maxLines="1"
+            android:paddingTop="0dp"
+            android:paddingBottom="0dp"
+            android:singleLine="true"
+            android:textColorHint="@color/search_icons_color" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_search"
-                style="@style/TextSearchStyle"
-                android:layout_width="match_parent"
-                android:layout_height="36dp"
-                android:gravity="center_vertical"
-                android:paddingTop="0dp"
-                android:paddingBottom="0dp"
-                android:hint="@string/search_hint"
-                android:textColorHint="@color/search_icons_color"
-                android:imeOptions="actionSearch"
-                android:inputType="text"
-                android:maxLines="1"
-                android:background="@drawable/bg_search_field" />
-
-        </com.google.android.material.textfield.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
@@ -74,9 +74,36 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:clipToPadding="false"
-        android:paddingTop="16dp"
-        android:paddingBottom="8dp"
         android:paddingStart="0dp"
-        android:paddingEnd="0dp"/>
+        android:paddingTop="16dp"
+        android:paddingEnd="0dp"
+        android:paddingBottom="8dp"
+        android:visibility="gone" />
+
+    <include
+        android:id="@+id/placeholderEmpty"
+        layout="@layout/placeholder_empty"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="102dp"
+        android:layout_weight="1"
+        android:visibility="gone" />
+
+    <include
+        android:id="@+id/placeholderError"
+        layout="@layout/placeholder_error"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="102dp"
+        android:layout_weight="1"
+        android:visibility="gone" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone" />
+
 
 </LinearLayout>

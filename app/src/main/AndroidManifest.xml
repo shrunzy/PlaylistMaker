@@ -22,7 +22,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".SettingsActivity" />
-        <activity android:name=".SearchActivity" />
+        <activity android:name=".SearchActivity"/>
         <activity android:name=".MediaActivity" />
     </application>
 

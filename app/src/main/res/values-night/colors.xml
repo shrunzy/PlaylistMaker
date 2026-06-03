@@ -18,4 +18,7 @@
 
     <color name="text_primary">#FFFFFF</color>
     <color name="text_secondary">#FFFFFF</color>
+    <color name="search_text_color_1">#FFFFFF</color>
+    <color name="retry_button_background">#FFFFFF</color>
+    <color name="retry_button_text">#1A1B22</color>
 </resources>

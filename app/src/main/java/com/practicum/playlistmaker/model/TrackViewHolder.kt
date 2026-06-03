@@ -28,7 +28,7 @@ class TrackViewHolder(
 
         binding.tvTrackName.text = track.trackName
         binding.tvArtistName.text = track.artistName
-        binding.tvTrackTime.text = track.trackTime
+        binding.tvTrackTime.text = formatDuration(track.trackTimeMillis)
 
         Glide.with(itemView)
             .load(track.artworkUrl100)

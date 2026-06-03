@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.practicum.playlistmaker.databinding.ItemTrackBinding
 
 class TrackAdapter(
-    private val tracks: List<Track>,
+    private val tracks: MutableList<Track>,
     private val listener: OnTrackClickListener? = null
 ) : RecyclerView.Adapter<TrackViewHolder>() {
 
@@ -24,4 +24,10 @@ class TrackAdapter(
     }
 
     override fun getItemCount() = tracks.size
+
+    fun updateTracks(newTracks: List<Track>) {
+        tracks.clear()
+        tracks.addAll(newTracks)
+        notifyDataSetChanged()
+    }
 }
