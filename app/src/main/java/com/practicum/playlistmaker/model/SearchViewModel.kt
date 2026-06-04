@@ -19,7 +19,7 @@ class SearchViewModel(private val apiService: iTunesService) : ViewModel() {
 
         viewModelScope.launch {
             _uiState.value = SearchUiState.Loading
-            lastFailedQuery = query // Фиксируем запрос перед попыткой
+            lastFailedQuery = query
             try {
                 val response = apiService.searchSongs("song", query)
 
@@ -38,19 +38,16 @@ class SearchViewModel(private val apiService: iTunesService) : ViewModel() {
                         )
                     }
                     if (results.isEmpty()) {
-                        _uiState.value =
-                            SearchUiState.EmptyResult(query) // Плейсхолдер: Нет результатов
+                        _uiState.value = SearchUiState.EmptyResult(query)
                     } else {
-                        _uiState.value = SearchUiState.Success(results) // Список треков
+                        _uiState.value = SearchUiState.Success(results)
                     }
                 } else {
-                    // Ошибка HTTP (4xx, 5xx) -> Error State с кнопкой "Обновить"
                     val errorMsg = response.errorBody()?.string() ?: "Неизвестная ошибка сервера."
                     _uiState.value =
                         SearchUiState.Error(query, "HTTP ${response.code()}: $errorMsg")
                 }
             } catch (e: Exception) {
-                // Ошибка сети/парсер -> Error State с кнопкой "Обновить"
                 _uiState.value =
                     SearchUiState.Error(query, "Ошибка соединения или парсинга данных.")
             }
@@ -59,12 +56,11 @@ class SearchViewModel(private val apiService: iTunesService) : ViewModel() {
 
     fun refreshLastFailedSearch() {
         lastFailedQuery?.let { query ->
-            performSearch(query) // Повторяем последний неудавшийся запрос
+            performSearch(query)
         }
     }
 
     fun clearQuery() {
-        // Сброс состояния и очистка запроса
         _uiState.value = SearchUiState.Idle
         lastFailedQuery = null
     }

@@ -9,7 +9,6 @@
     android:paddingEnd="0dp"
     android:paddingBottom="8dp">
 
-    <!-- Обложка -->
     <ImageView
         android:id="@+id/ivArtwork"
         android:layout_width="45dp"
@@ -20,56 +19,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <!-- Название трека -->
-    <TextView
-        android:id="@+id/tvTrackName"
-        style="@style/TextAppearance.PlaylistMaker.TrackName"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:ellipsize="end"
-        android:maxLines="1"
-        app:layout_constraintBottom_toTopOf="@id/tvArtistName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/ivArtwork"
-        app:layout_constraintTop_toTopOf="@id/ivArtwork" />
-
-    <!-- Исполнитель -->
-    <TextView
-        android:id="@+id/tvArtistName"
-        style="@style/TextAppearance.PlaylistMaker.ArtistName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="0dp"
-        android:ellipsize="end"
-        android:maxLines="1"
-        app:layout_constraintBottom_toBottomOf="@id/ivArtwork"
-        app:layout_constraintStart_toStartOf="@id/tvTrackName"
-        app:layout_constraintTop_toBottomOf="@id/tvTrackName" />
-
-    <!-- Точка-разделитель (SVG) -->
-    <ImageView
-        android:id="@+id/ivDot"
-        android:layout_width="3dp"
-        android:layout_height="3dp"
-        android:layout_marginStart="5dp"
-
-        android:src="@drawable/ic_dot"
-        app:layout_constraintBottom_toBottomOf="@id/tvArtistName"
-        app:layout_constraintStart_toEndOf="@id/tvArtistName"
-        app:layout_constraintTop_toTopOf="@id/tvArtistName" />
-
-    <!-- Время трека -->
-    <TextView
-        android:id="@+id/tvTrackTime"
-        style="@style/TextAppearance.PlaylistMaker.TrackTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        app:layout_constraintBottom_toBottomOf="@id/tvArtistName"
-        app:layout_constraintStart_toEndOf="@id/ivDot"
-        app:layout_constraintTop_toTopOf="@id/tvArtistName" />
 
     <ImageView
         android:id="@+id/ivForward"
@@ -82,5 +31,51 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:tint="@color/text_secondary" />
+
+    <TextView
+        android:id="@+id/tvTrackName"
+        style="@style/TextAppearance.PlaylistMaker.TrackName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        app:layout_constraintBottom_toTopOf="@id/tvArtistName"
+        app:layout_constraintEnd_toStartOf="@id/ivForward"
+        app:layout_constraintStart_toEndOf="@id/ivArtwork"
+        app:layout_constraintTop_toTopOf="@id/ivArtwork" />
+
+    <TextView
+        android:id="@+id/tvArtistName"
+        style="@style/TextAppearance.PlaylistMaker.ArtistName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        app:layout_constraintBottom_toBottomOf="@id/ivArtwork"
+        app:layout_constraintStart_toStartOf="@id/tvTrackName"
+        app:layout_constraintTop_toBottomOf="@id/tvTrackName" />
+
+    <ImageView
+        android:id="@+id/ivDot"
+        android:layout_width="3dp"
+        android:layout_height="3dp"
+        android:layout_marginStart="5dp"
+        android:src="@drawable/ic_dot"
+        app:layout_constraintBottom_toBottomOf="@id/tvArtistName"
+        app:layout_constraintStart_toEndOf="@id/tvArtistName"
+        app:layout_constraintTop_toTopOf="@id/tvArtistName" />
+
+    <TextView
+        android:id="@+id/tvTrackTime"
+        style="@style/TextAppearance.PlaylistMaker.TrackTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        app:layout_constraintBottom_toBottomOf="@id/tvArtistName"
+        app:layout_constraintStart_toEndOf="@id/ivDot"
+        app:layout_constraintTop_toTopOf="@id/tvArtistName" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
