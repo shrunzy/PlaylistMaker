@@ -1,10 +1,10 @@
 package com.practicum.playlistmaker
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
@@ -14,6 +14,7 @@ import kotlinx.coroutines.launch
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 
+import com.google.gson.Gson
 import com.practicum.playlistmaker.databinding.ActivitySearchBinding
 import com.practicum.playlistmaker.model.OnTrackClickListener
 import com.practicum.playlistmaker.model.SearchHistory
@@ -202,7 +203,10 @@ class SearchActivity : AppCompatActivity(), OnTrackClickListener {
     override fun onTrackClick(track: Track) {
         searchHistory.addTrack(track)
         updateSearchHistoryVisibility()
-        Toast.makeText(this, "Выбран: ${track.trackName} — ${track.artistName}", Toast.LENGTH_SHORT)
-            .show()
+
+        val intent = Intent(this, AudioPlayerActivity::class.java).apply {
+            putExtra(AudioPlayerActivity.EXTRA_TRACK, Gson().toJson(track))
+        }
+        startActivity(intent)
     }
 }

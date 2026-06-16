@@ -29,6 +29,10 @@
 
     <color name="text_primary">#000000</color>
     <color name="text_secondary">#AEAFB4</color>
+    <color name="player_background">#FFFFFF</color>
+    <color name="player_primary">#1A1B22</color>
+    <color name="player_secondary">#AEAFB4</color>
+    <color name="player_side_button_background">#1A1B22</color>
+    <color name="player_side_button_icon">#FFFFFF</color>
 
-
-    </resources>
+</resources>
