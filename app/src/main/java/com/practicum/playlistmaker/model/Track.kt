@@ -1,9 +1,9 @@
 package com.practicum.playlistmaker.model
 
 import com.google.gson.annotations.SerializedName
-import kotlin.concurrent.atomics.atomicArrayOfNulls
 
 data class Track(
+    val trackId: Long? = null,
     val trackName: String? = null,
     val artistName: String? = null,
     @SerializedName("trackTimeMillis")

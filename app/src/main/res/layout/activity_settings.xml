@@ -33,15 +33,13 @@
         style="@style/LinearLayoutSettingsStyle"
         android:layout_marginBottom="8dp">
 
-        <TextView
-            style="@style/TextSettingsStyle"
-            android:text="@string/dark_theme" />
-
         <com.google.android.material.switchmaterial.SwitchMaterial
-            android:id="@+id/switch_notifications"
-            android:layout_width="wrap_content"
+            android:id="@+id/themeSwitcher"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:checked="true"
+            android:text="@string/dark_theme"
+            android:textColor="@color/settings_text_color"
+            android:textSize="16sp"
             app:thumbTint="@color/switch_thumb"
             app:trackTint="@color/switch_track" />
 

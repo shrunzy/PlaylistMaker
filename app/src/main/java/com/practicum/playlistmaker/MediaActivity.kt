@@ -8,5 +8,6 @@ class MediaActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_media)
+        applySystemBarsInsetsPadding()
     }
 }

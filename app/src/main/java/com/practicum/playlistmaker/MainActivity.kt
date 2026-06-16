@@ -13,6 +13,7 @@ class MainActivity : AppCompatActivity() {
 
 
         setContentView(R.layout.activity_main)
+        applySystemBarsInsetsPadding()
 
         val btnSearch = findViewById<Button>(R.id.btn_search)
         val btnMedia = findViewById<Button>(R.id.btn_media)
