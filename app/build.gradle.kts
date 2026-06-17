@@ -1,8 +1,8 @@
-import org.gradle.kotlin.dsl.implementation
-
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.parcelize)
+    id("kotlin-parcelize")
 }
 
 android {
@@ -49,7 +49,6 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity)
-    //implementation 'com.google.android.material:material:1.6.1'
     implementation("com.github.bumptech.glide:glide:5.0.7")
     implementation(libs.androidx.constraintlayout)
     testImplementation(libs.junit)

@@ -8,5 +8,6 @@
     <dimen name="text_size_header">24sp</dimen>
     <dimen name="text_size_huge">28sp</dimen>
     <dimen name="track_corner_radius">2dp</dimen>
+    <dimen name="player_cover_corner_radius">8dp</dimen>
 
 </resources>
