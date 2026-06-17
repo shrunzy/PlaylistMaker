@@ -14,7 +14,6 @@ import kotlinx.coroutines.launch
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 
-import com.google.gson.Gson
 import com.practicum.playlistmaker.databinding.ActivitySearchBinding
 import com.practicum.playlistmaker.model.OnTrackClickListener
 import com.practicum.playlistmaker.model.SearchHistory
@@ -205,7 +204,7 @@ class SearchActivity : AppCompatActivity(), OnTrackClickListener {
         updateSearchHistoryVisibility()
 
         val intent = Intent(this, AudioPlayerActivity::class.java).apply {
-            putExtra(AudioPlayerActivity.EXTRA_TRACK, Gson().toJson(track))
+            putExtra(AudioPlayerActivity.EXTRA_TRACK, track)
         }
         startActivity(intent)
     }

@@ -6,12 +6,12 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.Group
+import androidx.core.content.IntentCompat
 import androidx.core.view.doOnLayout
 import androidx.core.view.updateLayoutParams
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.google.gson.Gson
 import com.practicum.playlistmaker.databinding.ActivityAudioPlayerBinding
 import com.practicum.playlistmaker.model.Track
 import com.practicum.playlistmaker.model.formatDuration
@@ -28,8 +28,7 @@ class AudioPlayerActivity : AppCompatActivity() {
         setContentView(binding.root)
         binding.root.applySystemBarsInsetsPadding()
 
-        val track = intent.getStringExtra(EXTRA_TRACK)
-            ?.let { Gson().fromJson(it, Track::class.java) }
+        val track = IntentCompat.getParcelableExtra(intent, EXTRA_TRACK, Track::class.java)
             ?: run {
                 finish()
                 return
