@@ -3,6 +3,8 @@ package com.practicum.playlistmaker
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.activity.viewModels
@@ -32,10 +34,15 @@ class SearchActivity : AppCompatActivity(), OnTrackClickListener {
     private lateinit var trackAdapter: TrackAdapter
     private lateinit var historyAdapter: TrackAdapter
     private lateinit var searchHistory: SearchHistory
+    private val handler = Handler(Looper.getMainLooper())
+    private val searchRunnable = Runnable { searchRequest() }
+    private var isClickAllowed = true
 
     companion object {
         private const val KEY_SEARCH_QUERY = "SEARCH_QUERY"
         private const val SEARCH_HISTORY_PREFERENCES = "search_history_preferences"
+        private const val SEARCH_DEBOUNCE_DELAY = 2000L
+        private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -81,11 +88,8 @@ class SearchActivity : AppCompatActivity(), OnTrackClickListener {
 
         binding.etSearch.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                val query = binding.etSearch.text?.toString()?.trim() ?: ""
-                if (query.isNotEmpty()) {
-                    binding.searchHistoryContainer.visibility = View.GONE
-                    viewModel.performSearch(query)
-                }
+                handler.removeCallbacks(searchRunnable)
+                searchRequest()
                 true
             } else false
         }
@@ -99,7 +103,9 @@ class SearchActivity : AppCompatActivity(), OnTrackClickListener {
             binding.searchLayout.isEndIconVisible = hasText
             if (hasText) {
                 binding.searchHistoryContainer.visibility = View.GONE
+                searchDebounce()
             } else {
+                handler.removeCallbacks(searchRunnable)
                 viewModel.clearQuery()
                 updateSearchHistoryVisibility()
             }
@@ -114,6 +120,28 @@ class SearchActivity : AppCompatActivity(), OnTrackClickListener {
             historyAdapter.updateTracks(emptyList())
             binding.searchHistoryContainer.visibility = View.GONE
         }
+    }
+
+    private fun searchRequest() {
+        val query = binding.etSearch.text?.toString()?.trim() ?: ""
+        if (query.isNotEmpty()) {
+            binding.searchHistoryContainer.visibility = View.GONE
+            viewModel.performSearch(query)
+        }
+    }
+
+    private fun searchDebounce() {
+        handler.removeCallbacks(searchRunnable)
+        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
+    }
+
+    private fun clickDebounce(): Boolean {
+        val current = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
+        }
+        return current
     }
 
     private fun observeUiState() {
@@ -200,12 +228,20 @@ class SearchActivity : AppCompatActivity(), OnTrackClickListener {
     }
 
     override fun onTrackClick(track: Track) {
-        searchHistory.addTrack(track)
-        updateSearchHistoryVisibility()
+        if (clickDebounce()) {
+            searchHistory.addTrack(track)
+            updateSearchHistoryVisibility()
 
-        val intent = Intent(this, AudioPlayerActivity::class.java).apply {
-            putExtra(AudioPlayerActivity.EXTRA_TRACK, track)
+            val intent = Intent(this, AudioPlayerActivity::class.java).apply {
+                putExtra(AudioPlayerActivity.EXTRA_TRACK, track)
+            }
+            startActivity(intent)
         }
-        startActivity(intent)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        handler.removeCallbacksAndMessages(null)
     }
 }
+
