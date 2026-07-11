@@ -12,7 +12,16 @@ class SearchHistory(
     fun getTracks(): ArrayList<Track> {
         val json = sharedPreferences.getString(SEARCH_HISTORY_KEY, null) ?: return arrayListOf()
         val type = object : TypeToken<ArrayList<Track>>() {}.type
-        return gson.fromJson(json, type) ?: arrayListOf()
+        val tracks: ArrayList<Track> = gson.fromJson(json, type) ?: arrayListOf()
+        val playableTracks = tracks.filterTo(arrayListOf()) { track ->
+            !track.previewUrl.isNullOrBlank()
+        }
+
+        if (playableTracks.size != tracks.size) {
+            saveTracks(playableTracks)
+        }
+
+        return playableTracks
     }
 
     fun addTrack(track: Track) {
@@ -50,3 +59,4 @@ class SearchHistory(
         private const val MAX_HISTORY_SIZE = 10
     }
 }
+

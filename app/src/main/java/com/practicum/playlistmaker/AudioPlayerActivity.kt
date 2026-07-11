@@ -1,8 +1,12 @@
 package com.practicum.playlistmaker
 
+import android.media.MediaPlayer
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.Group
@@ -20,6 +24,17 @@ import kotlin.math.roundToInt
 class AudioPlayerActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAudioPlayerBinding
+    private var mediaPlayer = MediaPlayer()
+    private var playerState = STATE_DEFAULT
+    private val handler = Handler(Looper.getMainLooper())
+    private val progressRunnable = object : Runnable {
+        override fun run() {
+            if (playerState == STATE_PLAYING) {
+                binding.playbackProgress.text = formatDuration(mediaPlayer.currentPosition.toLong())
+                handler.postDelayed(this, PROGRESS_UPDATE_DELAY)
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,11 +50,36 @@ class AudioPlayerActivity : AppCompatActivity() {
             }
 
         binding.playerBack.setOnClickListener {
-            onBackPressedDispatcher.onBackPressed()
+            closePlayer()
+        }
+        onBackPressedDispatcher.addCallback(
+            this,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    closePlayer()
+                }
+            }
+        )
+        binding.playButton.setOnClickListener {
+            playbackControl()
         }
 
         bindTrack(track)
+        preparePlayer(track.previewUrl)
         adjustVerticalMarginsToFit()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (playerState == STATE_PLAYING) {
+            pausePlayer()
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        handler.removeCallbacks(progressRunnable)
+        mediaPlayer.release()
     }
 
     private fun bindTrack(track: Track) {
@@ -75,6 +115,80 @@ class AudioPlayerActivity : AppCompatActivity() {
         val isVisible = !value.isNullOrBlank()
         group.visibility = if (isVisible) View.VISIBLE else View.GONE
         valueView.text = value.orEmpty()
+    }
+
+    private fun preparePlayer(previewUrl: String?) {
+        showPlayButtonLoading()
+        binding.playbackProgress.text = getString(R.string.initial_progress)
+
+        if (previewUrl.isNullOrBlank()) return
+
+        mediaPlayer.setDataSource(previewUrl)
+        mediaPlayer.setOnPreparedListener {
+            showPlayButtonReady()
+            playerState = STATE_PREPARED
+        }
+        mediaPlayer.setOnCompletionListener {
+            handler.removeCallbacks(progressRunnable)
+            mediaPlayer.seekTo(0)
+            binding.playbackProgress.text = getString(R.string.initial_progress)
+            showPlayButtonReady()
+            playerState = STATE_PREPARED
+        }
+        mediaPlayer.setOnErrorListener { _, _, _ ->
+            handler.removeCallbacks(progressRunnable)
+            binding.playbackProgress.text = getString(R.string.initial_progress)
+            showPlayButtonLoading()
+            playerState = STATE_DEFAULT
+            true
+        }
+        mediaPlayer.prepareAsync()
+    }
+
+    private fun showPlayButtonLoading() {
+        binding.playButton.isEnabled = false
+        binding.playButton.alpha = DISABLED_PLAY_BUTTON_ALPHA
+        binding.playButton.setImageResource(R.drawable.button_play)
+        binding.playButton.contentDescription = getString(R.string.play)
+    }
+
+    private fun showPlayButtonReady() {
+        binding.playButton.isEnabled = true
+        binding.playButton.alpha = ENABLED_PLAY_BUTTON_ALPHA
+        binding.playButton.setImageResource(R.drawable.button_play)
+        binding.playButton.contentDescription = getString(R.string.play)
+    }
+
+    private fun playbackControl() {
+        when (playerState) {
+            STATE_PLAYING -> pausePlayer()
+            STATE_PREPARED, STATE_PAUSED -> startPlayer()
+        }
+    }
+
+    private fun startPlayer() {
+        mediaPlayer.start()
+        binding.playButton.setImageResource(R.drawable.button_pause)
+        binding.playButton.contentDescription = getString(R.string.pause)
+        playerState = STATE_PLAYING
+        handler.post(progressRunnable)
+    }
+
+    private fun pausePlayer() {
+        mediaPlayer.pause()
+        binding.playButton.setImageResource(R.drawable.button_play)
+        binding.playButton.contentDescription = getString(R.string.play)
+        playerState = STATE_PAUSED
+        handler.removeCallbacks(progressRunnable)
+    }
+
+    private fun closePlayer() {
+        handler.removeCallbacks(progressRunnable)
+        if (playerState == STATE_PLAYING) {
+            mediaPlayer.pause()
+            playerState = STATE_PAUSED
+        }
+        finish()
     }
 
     private fun adjustVerticalMarginsToFit() {
@@ -135,5 +249,14 @@ class AudioPlayerActivity : AppCompatActivity() {
 
     companion object {
         const val EXTRA_TRACK = "extra_track"
+        private const val STATE_DEFAULT = 0
+        private const val STATE_PREPARED = 1
+        private const val STATE_PLAYING = 2
+        private const val STATE_PAUSED = 3
+        private const val PROGRESS_UPDATE_DELAY = 300L
+        private const val DISABLED_PLAY_BUTTON_ALPHA = 0.4f
+        private const val ENABLED_PLAY_BUTTON_ALPHA = 1f
     }
 }
+
+
